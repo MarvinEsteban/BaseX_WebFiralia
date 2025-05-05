@@ -1,91 +1,107 @@
 <nav>
     <a href="../lectura.php">Inicio</a> |
-    <a href="Insertar.php">Insertar Evento</a>
+    <a href="Insertar.php">Insertar Evento</a> |
     <a href="Borrar.php">Eliminar Evento</a>
-
 </nav>
 <hr>
 
 <?php
 include_once '../load.php';
-
 use BaseXClient\Session;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $idToFilter = $_POST['id'];  // ID del evento a filtrar
+$name = $type = $start_date = $end_date = $about = $price = null;
+$errorMessage = "";
+
+// Si se envió el formulario con un ID seleccionado
+if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['id'])) {
+    $idToFilter = trim($_POST['id']);
 
     try {
-        // Crear sesión de BaseX
         $session = new Session("localhost", 1984, "admin", "admin");
         $session->execute("OPEN eventos");
 
-        // Filtrar el evento con el ID seleccionado
+        // Consulta XQuery modificada para obtener estructura plana
         $query = <<<XQUERY
-let \$event := /events/event[id = "$idToFilter"]
+for \$e in /events/event
+where \$e/id = "$idToFilter"
 return
-    <event>
-        <name>{\$event/name}</name>
-        <type>{\$event/type}</type>
-        <start_date>{\$event/start_date}</start_date>
-        <end_date>{\$event/end_date}</end_date>
-        <about>{\$event/about}</about>
-        <price>{\$event/price}</price>
-    </event>
+<event>
+    <name>{\$e/name/string()}</name>
+    <type>{\$e/type/string()}</type>
+    <start_date>{\$e/start_date/string()}</start_date>
+    <end_date>{\$e/end_date/string()}</end_date>
+    <about>{\$e/about/string()}</about>
+    <price>{\$e/price/string()}</price>
+</event>
 XQUERY;
 
-        // Ejecutar la consulta XQuery
-        $eventDetails = $session->execute("XQUERY " . $query);
-        $event = simplexml_load_string($eventDetails);  // Convertir el resultado a XML para manejarlo fácilmente
+        $result = $session->execute("XQUERY " . $query);
 
-        if ($event) {
-            // Si el evento fue encontrado, mostrar sus detalles
-            $name = (string) $event->name;
-            $type = (string) $event->type;
-            $start_date = (string) $event->start_date;
-            $end_date = (string) $event->end_date;
-            $about = (string) $event->about;
-            $price = (string) $event->price;
+        if (trim($result) === "") {
+            $errorMessage = "❌ No se encontró el evento con ID $idToFilter.";
         } else {
-            // Si no se encuentra el evento con ese ID
-            $errorMessage = "No se encontró el evento con el ID seleccionado.";
+            // Formatear el XML para mostrarlo con indentación
+            $dom = new DOMDocument();
+            $dom->preserveWhiteSpace = false;
+            $dom->formatOutput = true;
+            
+            if ($dom->loadXML($result)) {
+                $formattedXml = $dom->saveXML();
+                echo "<h3>XML Obtenido:</h3><pre>" . htmlentities($formattedXml) . "</pre>";
+                
+                $event = simplexml_load_string($result);
+                if ($event !== false) {
+                    // Extraer valores (estructura plana gracias a la consulta modificada)
+                    $name = (string)$event->name;
+                    $type = (string)$event->type;
+                    $start_date = (string)$event->start_date;
+                    $end_date = (string)$event->end_date;
+                    $about = (string)$event->about;
+                    $price = (string)$event->price;
+                } else {
+                    $errorMessage = "❌ Error al interpretar el XML: " . print_r(libxml_get_errors(), true);
+                    libxml_clear_errors();
+                }
+            } else {
+                $errorMessage = "❌ El XML obtenido no es válido";
+            }
         }
 
     } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
+        $errorMessage = "❌ Error: " . $e->getMessage();
     } finally {
-        $session->close();
-    }
-} else {
-    // Obtener la lista de IDs de eventos para mostrarlos en el formulario
-    try {
-        $session = new Session("localhost", 1984, "admin", "admin");
-        $session->execute("OPEN eventos");
-
-        // Obtener los IDs de los eventos (suponiendo que el evento tiene un nodo 'id')
-        $result = $session->execute('XQUERY /events/event/id/string()');
-        $ids = explode("\n", trim($result));  // Dividir los IDs por líneas
-
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    } finally {
-        $session->close();
+        if (isset($session)) $session->close();
     }
 }
 
+// Cargar todos los IDs disponibles
+try {
+    $session = new Session("localhost", 1984, "admin", "admin");
+    $session->execute("OPEN eventos");
+    $idsRaw = $session->execute('XQUERY for $e in /events/event return $e/id/string()');
+    $ids = array_filter(explode("\n", trim($idsRaw)));
+} catch (Exception $e) {
+    $errorMessage = "❌ Error al cargar los IDs: " . $e->getMessage();
+    $ids = [];
+} finally {
+    if (isset($session)) $session->close();
+}
 ?>
 
 <h1>Filtrar Evento por ID</h1>
 <form method="post">
-    <label>Selecciona el ID del evento:</label><br>
-    <select name="id" onchange="this.form.submit()">
+    <label for="id">Selecciona el ID del evento:</label><br>
+    <select name="id" id="id" onchange="this.form.submit()">
         <option value="">--Selecciona un evento--</option>
         <?php foreach ($ids as $id): ?>
-            <option value="<?= htmlspecialchars($id) ?>"><?= htmlspecialchars($id) ?></option>
+            <option value="<?= htmlspecialchars($id) ?>" <?= (isset($idToFilter) && $idToFilter == $id) ? 'selected' : '' ?>>
+                <?= htmlspecialchars($id) ?>
+            </option>
         <?php endforeach; ?>
     </select><br><br>
 </form>
 
-<?php if (isset($name)): ?>
+<?php if ($name): ?>
     <h3>Detalles del Evento</h3>
     <p><strong>Nombre:</strong> <?= htmlspecialchars($name) ?></p>
     <p><strong>Tipo:</strong> <?= htmlspecialchars($type) ?></p>
@@ -93,7 +109,6 @@ XQUERY;
     <p><strong>Fecha de fin:</strong> <?= htmlspecialchars($end_date) ?></p>
     <p><strong>Descripción:</strong> <?= htmlspecialchars($about) ?></p>
     <p><strong>Precio:</strong> <?= htmlspecialchars($price) ?></p>
-<?php elseif (isset($errorMessage)): ?>
-    <p><?= $errorMessage ?></p>
+<?php elseif ($errorMessage): ?>
+    <p style="color:red;"><?= $errorMessage ?></p>
 <?php endif; ?>
-
