@@ -1,7 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <script src='main.js'></script>
+</head>
+ 
+
+<?php
+/**
+ * filtrar.php
+ *
+ * Este script permite al usuario seleccionar un evento por su ID desde una lista desplegable
+ * y muestra los detalles completos del evento, incluyendo una visualización del XML.
+ *
+ * Variables principales:
+ * - $idToFilter: ID del evento seleccionado por el usuario.
+ * - $name, $type, $start_date, $end_date, $about, $price: detalles del evento extraídos del XML.
+ * - $errorMessage: mensaje de error si ocurre alguno durante la consulta o procesamiento.
+ * - $ids: lista de todos los IDs disponibles en la base de datos.
+ */
+?>
+
 <nav>
     <a href="../lectura.php">Inicio</a> |
     <a href="Insertar.php">Insertar Evento</a> |
-    <a href="Borrar.php">Eliminar Evento</a>
+    <a href="Borrar.php">Eliminar Evento</a> |
+    <a href="editarEvento.php">Editar Evento</a>
 </nav>
 <hr>
 
@@ -38,7 +66,7 @@ XQUERY;
         $result = $session->execute("XQUERY " . $query);
 
         if (trim($result) === "") {
-            $errorMessage = "❌ No se encontró el evento con ID $idToFilter.";
+            $errorMessage = "No se encontró el evento con ID $idToFilter.";
         } else {
             // Formatear el XML para mostrarlo con indentación
             $dom = new DOMDocument();
@@ -59,16 +87,16 @@ XQUERY;
                     $about = (string)$event->about;
                     $price = (string)$event->price;
                 } else {
-                    $errorMessage = "❌ Error al interpretar el XML: " . print_r(libxml_get_errors(), true);
+                    $errorMessage = "Error al interpretar el XML: " . print_r(libxml_get_errors(), true);
                     libxml_clear_errors();
                 }
             } else {
-                $errorMessage = "❌ El XML obtenido no es válido";
+                $errorMessage = "El XML obtenido no es válido";
             }
         }
 
     } catch (Exception $e) {
-        $errorMessage = "❌ Error: " . $e->getMessage();
+        $errorMessage = "Error: " . $e->getMessage();
     } finally {
         if (isset($session)) $session->close();
     }
@@ -81,7 +109,7 @@ try {
     $idsRaw = $session->execute('XQUERY for $e in /events/event return $e/id/string()');
     $ids = array_filter(explode("\n", trim($idsRaw)));
 } catch (Exception $e) {
-    $errorMessage = "❌ Error al cargar los IDs: " . $e->getMessage();
+    $errorMessage = "Error al cargar los IDs: " . $e->getMessage();
     $ids = [];
 } finally {
     if (isset($session)) $session->close();

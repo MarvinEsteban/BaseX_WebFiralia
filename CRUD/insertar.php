@@ -1,6 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <script src='main.js'></script>
+</head>
+ 
+<?php
+/**
+ * insertar.php
+ * 
+ * Este archivo permite al usuario insertar un nuevo evento en la base de datos BaseX.
+ * Se genera automáticamente un nuevo ID basado en el mayor ID existente.
+ * 
+ * Variables principales:
+ * - $name: nombre del evento (string)
+ * - $type: tipo o categoría del evento (string)
+ * - $start_date: fecha de inicio (string, formato YYYY-MM-DD)
+ * - $end_date: fecha de fin (string, formato YYYY-MM-DD)
+ * - $about: descripción del evento (string)
+ * - $price: precio del evento (string, puede contener decimales)
+ * - $lastId: último ID encontrado en la base de datos (int)
+ * - $newId: nuevo ID para el evento (int)
+ * - $session: objeto de conexión BaseXClient\Session
+ */
+?>
+
 <nav>
     <a href="../lectura.php">Inicio</a> |
-    <a href="Borrar.php">Eliminar Evento</a>
+    <a href="Borrar.php">Eliminar Evento</a> |
+    <a href="Filtrar.php">Filtrar Evento</a> |
+    <a href="editarEvento.php">Editar Evento</a>
 </nav>
 <hr>
 
@@ -39,41 +72,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insertar el nuevo evento
         $session->execute("XQUERY insert node $newEvent into /events");
 
-        echo "✅ Evento insertado correctamente con ID $newId.";
+        echo "Evento insertado correctamente con ID $newId.";
     } catch (Exception $e) {
-        echo "❌ Error: " . $e->getMessage();
+        echo "Error: " . $e->getMessage();
     } finally {
         $session->close();
     }
 } else {
-?>
+    ?>
 
-<h1>Insertar Nuevo Evento</h1>
-<form method="post">
-    <label>Nombre:</label><br>
-    <input type="text" name="name" required><br><br>
+    <h1>Insertar Nuevo Evento</h1>
+    <form method="post">
+        <label>Nombre:</label><br>
+        <input type="text" name="name" required><br><br>
 
-    <label>Tipo:</label><br>
-    <input type="text" name="type" required><br><br>
+        <label>Tipo:</label><br>
+        <input type="text" name="type" required><br><br>
 
-    <label>Fecha de inicio:</label><br>
-    <input type="date" name="start_date" required><br><br>
+        <label>Fecha de inicio:</label><br>
+        <input type="date" name="start_date" required><br><br>
 
-    <label>Fecha de fin:</label><br>
-    <input type="date" name="end_date" required><br><br>
+        <label>Fecha de fin:</label><br>
+        <input type="date" name="end_date" required><br><br>
 
-    <label>Descripción:</label><br>
-    <input type="text" name="about" required><br><br>
+        <label>Descripción:</label><br>
+        <input type="text" name="about" required><br><br>
 
-    <label>Precio:</label><br>
-    <input type="text" name="price" required><br><br>
+        <label>Precio:</label><br>
+        <input type="text" name="price" required><br><br>
 
-    <div style="display: flex; gap: 10px;">
-        <input type="submit" value="Insertar Evento">
-        <button type="button" onclick="window.location.href='../lectura.php'">Volver</button>
-    </div>
-</form>
+        <div style="display: flex; gap: 10px;">
+            <input type="submit" value="Insertar Evento">
+            <button type="button" onclick="window.location.href='../lectura.php'">Volver</button>
+        </div>
+    </form>
 
-<?php
+    <?php
 }
 ?>
