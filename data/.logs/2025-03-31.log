@@ -1,0 +1,8 @@
+13:46:51.324	SERVER	admin	OK	Server was started (port: 1984).		
+13:46:51.413	SERVER	admin	OK	HTTP Server was started (port: 8080).		
+13:47:03.898	127.0.0.1:54211	admin	REQUEST	XQUERY 1 to 10	16.33 ms	
+13:47:03.968	127.0.0.1:54211	admin	OK	Query "bin" executed in 50.89 ms.	69.94 ms	
+13:47:03.968	127.0.0.1:54211	admin	REQUEST	EXIT	0.29 ms	
+13:47:03.969	127.0.0.1:54211	admin	OK		0.18 ms	
+14:10:07.839	127.0.0.1:54361	admin	REQUEST	CREATE DB usuarios C:\xampp\htdocs\basex\usuarios.xml	1.96 ms	
+14:10:07.840	127.0.0.1:54361	admin	ERROR	Resource "C:/xampp/htdocs/basex/usuarios.xml" not found.	0.98 ms	

@@ -1,0 +1,8 @@
+09:14:15.616	SERVER	admin	OK	Server was started (port: 1984).		
+09:14:15.704	SERVER	admin	OK	HTTP Server was started (port: 8080).		
+09:14:36.653	127.0.0.1:51351	admin	REQUEST	XQUERY 1 to 10	8.62 ms	
+09:14:36.709	127.0.0.1:51351	admin	OK	Query "system32" executed in 43.44 ms.	56.47 ms	
+09:14:36.710	127.0.0.1:51351	admin	REQUEST	EXIT	0.42 ms	
+09:14:36.710	127.0.0.1:51351	admin	OK		0.19 ms	
+09:18:34.592	127.0.0.1:51419	admin	REQUEST	CREATE DB eventos C:\xampp\htdocs\basex\prueba.xml	1.46 ms	
+09:18:34.593	127.0.0.1:51419	admin	ERROR	Resource "C:/xampp/htdocs/basex/prueba.xml" not found.	0.83 ms	

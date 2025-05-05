@@ -1,0 +1,11 @@
+09:11:51.862	SERVER	admin	OK	Server was started (port: 1984).		
+09:11:51.943	SERVER	admin	OK	HTTP Server was started (port: 8080).		
+09:13:55.916	127.0.0.1:57660	admin	ERROR	Access denied: admin.	2.11 ms	
+09:41:33.237	127.0.0.1:58179	admin	ERROR	Access denied: admin.	1.26 ms	
+09:42:15.077	127.0.0.1:58190	admin	ERROR	Access denied: admin.	0.82 ms	
+09:47:19.548	SERVER	admin	OK	Server was started (port: 1984).		
+09:47:19.641	SERVER	admin	OK	HTTP Server was started (port: 8080).		
+09:47:50.810	127.0.0.1:49752	admin	REQUEST	XQUERY 1 to 10	9.24 ms	
+09:47:50.873	127.0.0.1:49752	admin	OK	Query "system32" executed in 48.41 ms.	62.44 ms	
+09:47:50.874	127.0.0.1:49752	admin	REQUEST	EXIT	0.34 ms	
+09:47:50.874	127.0.0.1:49752	admin	OK		0.19 ms	

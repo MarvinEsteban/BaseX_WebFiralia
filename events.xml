@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<events xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="events.xsd">
+    <event>
+        <name>Salon del Manga</name>
+        <type>Entretenimiento</type>
+        <start_date>2025/10/15</start_date>
+        <end_date>2025/10/19</end_date>
+        <about>Un evento de anime y manga</about>
+        <price>15$</price>
+    </event>
+    <event>
+    <name>Festival de Videojuegos</name>
+    <type>Entretenimiento</type>
+    <start_date>2025/08/10</start_date>
+    <end_date>2025/08/12</end_date>
+    <about>Un evento para los amantes de los videojuegos</about>
+    <price>20$</price>
+    </event>
+
+<event>
+    <name>Expo Cómics</name>
+    <type>Entretenimiento</type>
+    <start_date>2025/07/05</start_date>
+    <end_date>2025/07/07</end_date>
+    <about>Convención de cómics y novelas gráficas</about>
+    <price>18$</price>
+</event>
+
+<event>
+    <name>Concierto de Rock</name>
+    <type>Música</type>
+    <start_date>2025/09/20</start_date>
+    <end_date>2025/09/20</end_date>
+    <about>Un gran festival de bandas de rock</about>
+    <price>30$</price>
+</event>
+
+<event>
+    <name>Feria del Libro</name>
+    <type>Cultura</type>
+    <start_date>2025/06/15</start_date>
+    <end_date>2025/06/20</end_date>
+    <about>Un encuentro para los amantes de la literatura</about>
+    <price>10$</price>
+</event>
+
+<event>
+    <name>Maratón de Cine</name>
+    <type>Cine</type>
+    <start_date>2025/11/10</start_date>
+    <end_date>2025/11/11</end_date>
+    <about>Proyección de películas clásicas y modernas</about>
+    <price>12$</price>
+</event>
+
+<event>
+    <name>Competencia de E-Sports</name>
+    <type>Deportes</type>
+    <start_date>2025/05/01</start_date>
+    <end_date>2025/05/03</end_date>
+    <about>Torneo de videojuegos competitivos</about>
+    <price>25$</price>
+</event>
+
+<event>
+    <name>Convención de Ciencia Ficción</name>
+    <type>Entretenimiento</type>
+    <start_date>2025/12/05</start_date>
+    <end_date>2025/12/07</end_date>
+    <about>Encuentro para fanáticos de la ciencia ficción</about>
+    <price>22$</price>
+</event>
+
+<event>
+    <name>Festival Gastronómico</name>
+    <type>Gastronomía</type>
+    <start_date>2025/09/01</start_date>
+    <end_date>2025/09/03</end_date>
+    <about>Un evento para probar la mejor comida</about>
+    <price>15$</price>
+</event>
+
+<event>
+    <name>Competencia de Cosplay</name>
+    <type>Moda</type>
+    <start_date>2025/07/15</start_date>
+    <end_date>2025/07/16</end_date>
+    <about>Concurso de disfraces inspirados en personajes</about>
+    <price>10$</price>
+</event>
+
+<event>
+    <name>Feria Medieval</name>
+    <type>Cultura</type>
+    <start_date>2025/10/25</start_date>
+    <end_date>2025/10/27</end_date>
+    <about>Recreación histórica con espectáculos y mercadillos</about>
+    <price>17$</price>
+</event>
+
+
+</events>
